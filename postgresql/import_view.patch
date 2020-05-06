@@ -1,0 +1,21 @@
+diff -uprN tds_fdw-2.0.1_org/src/tds_fdw.c tds_fdw-2.0.1/src/tds_fdw.c
+--- tds_fdw-2.0.1_org/src/tds_fdw.c	2020-05-06 10:43:54.063904927 +0900
++++ tds_fdw-2.0.1/src/tds_fdw.c	2020-05-06 10:47:54.077398202 +0900
+@@ -2993,7 +2993,7 @@ tdsImportSqlServerSchema(ImportForeignSc
+ 						   "  LEFT JOIN INFORMATION_SCHEMA.COLUMNS c ON "
+ 						   "    t.table_schema = c.table_schema "
+ 						   "      AND t.table_name = c.table_name "
+-						   "WHERE t.table_type = 'BASE TABLE' "
++						   "WHERE t.table_type IN ('BASE TABLE', 'VIEW') "
+ 						   "  AND t.table_schema = ");
+ 	deparseStringLiteral(&buf, stmt->remote_schema);
+ 
+@@ -3396,7 +3396,7 @@ tdsImportSybaseSchema(ImportForeignSchem
+ 						   "  LEFT JOIN syscolumns sc ON sc.id = so.id "
+ 						   "  LEFT JOIN systypes st ON st.usertype = sc.usertype "
+ 						   "  LEFT JOIN syscomments sm ON sm.id = sc.cdefault "
+-						   "WHERE so.type = 'U' AND su.name = ");
++						   "WHERE so.type IN ('U', 'V') AND su.name = ");
+ 
+ 	deparseStringLiteral(&buf, stmt->remote_schema);
+ 

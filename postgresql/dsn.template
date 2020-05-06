@@ -1,0 +1,13 @@
+[mssql]
+Description = SQL Server
+Driver = FreeTDS
+Trace = No
+Server = mssql
+#データベース名
+Database = master
+#ポート番号 SQL Serverは通常 1433
+Port = 1433
+#TDS_Version SQLServer2000は7.1 SQLServer2005以降は7.2
+TDS_Version = 7.2
+#クライアント(Linux側)の文字コードセット
+ClientCharset = UTF-8

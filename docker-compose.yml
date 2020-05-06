@@ -1,0 +1,67 @@
+version: '3'
+services:
+  postgresql:
+     build: 
+       context: .
+       dockerfile: ./postgresql/Dockerfile
+     environment:
+       - POSTGRES_PASSWORD=password
+     # tty: true
+     # 最後の:zはselinuxのラベル書き換え
+     volumes:
+       - postgresql_data:/var/lib/postgresql_data
+     ports:
+       - 5432:5432
+     # depends_on:
+     #   - mysql
+  pgadmin:  
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 81:80
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    
+  mssql:
+    image: docker.io/microsoft/mssql-server-linux
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=p@ssw0rd!
+    #   - MSSQL_PID=Express
+    #   - MSSQL_LCID=1041
+    #   - MSSQL_COLLATION=Japanese_CI_AS
+    #   - SQLSERVER_DATABASE=msqldb
+    #   - SQLSERVER_USER=msql_user
+    #   - SQLSERVER_PASSWORD=test
+    #   - MSSQL_LOG_DIR=/MSSQL/log
+    #   - MSSQL_DATA_DIR=/MSSQL/data
+    #   - MSSQL_BACKUP_DIR=/MSSQL/backup
+    #   - MSSQL_MASTER_DATA_FILE=/MSSQL/master.mdf
+    #   - MSSQL_MASTER_LOG_FILE=/MSSQL/mastlog.ldf
+    ports:
+      - 1433:1433
+    volumes:
+      - msql_data:/var/opt/mssql
+  oracle11g:
+    build:
+      context: .
+      dockerfile: ./oracle/Dockerfile
+    ports:
+      - 1521:1521
+    volumes:
+      - ./oracle/:/root/oracle/
+      - oracle_data:/u01/app/oracle/oradata/
+      
+volumes:
+  postgresql_data:
+  mysql_data:
+  msql_data:
+  oracle_data:
