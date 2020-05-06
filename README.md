@@ -18,9 +18,14 @@ docker-composeが利用できる環境で以下を実行
 
 ## 各DBへの接続確認
 `localhost:81`
+
 へアクセスし、
+
 `ユーザ名：root`
 `パスワード:root`
+
 でログイン。各DBごとにスキーマが作成されているので
+
 `select * from mysql_schema.test;`
+
 で確認。
