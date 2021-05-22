@@ -32,6 +32,8 @@ FROM
     ON mssql.id = oracle.id
   LEFT JOIN odbc_schema.test odbc 
     ON mssql.id = odbc.id
+  LEFT JOIN jdbc_schema.test jdbc 
+    ON mssql.id = jdbc.id
 ;
 ```
 
