@@ -32,3 +32,13 @@ COPY postgresql/driver.template /root/
 COPY postgresql/dsn.template /root/
 RUN odbcinst -i -d -f driver.template
 RUN odbcinst -i -s -l -f dsn.template
+
+# jdbc_fdw
+COPY postgresql/jdbc/ /jdbc
+RUN apt update && apt -y install openjdk-11-jdk
+RUN git clone https://github.com/atris/JDBC_FDW.git
+RUN ln -s /usr/lib/jvm/java-11-openjdk-amd64/lib/server/libjvm.so /usr/lib/libjvm.so
+RUN cd JDBC_FDW && USE_PGXS=1 make && USE_PGXS=1 make install
+# RUN git clone https://github.com/heimir-sverrisson/jdbc2_fdw.git
+# RUN ln -s /usr/lib/jvm/java-11-openjdk-amd64/lib/server/libjvm.so /usr/lib/libjvm.so
+# RUN cd jdbc2_fdw && USE_PGXS=1 make && USE_PGXS=1 make install

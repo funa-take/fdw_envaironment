@@ -65,6 +65,17 @@ init_odbc:
 	docker-compose exec postgresql psql -U postgres -c "CREATE USER MAPPING FOR postgres SERVER odbc_server OPTIONS( odbc_UID 'sa', odbc_PWD 'p@ssw0rd!');"
 	docker-compose exec postgresql psql -U postgres -c "CREATE SCHEMA odbc_schema;"
 	docker-compose exec postgresql psql -U postgres -c "IMPORT FOREIGN SCHEMA fdw_test FROM SERVER odbc_server INTO odbc_schema;"
+	
+init_jdbc:
+	docker-compose exec postgresql psql -U postgres -c "DROP SCHEMA IF EXISTS jdbc_schema cascade;"
+	docker-compose exec postgresql psql -U postgres -c "DROP SERVER IF EXISTS jdbc_server cascade;"
+	
+	docker-compose exec postgresql psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS jdbc_fdw;"
+	docker-compose exec postgresql psql -U postgres -c "CREATE SERVER jdbc_server FOREIGN DATA WRAPPER jdbc_fdw OPTIONS (drivername 'com.mysql.cj.jdbc.Driver', url 'jdbc:mysql://mysql/fdw_test', jarfile '/jdbc/mysql-connector-java-8.0.25.jar');"
+	docker-compose exec postgresql psql -U postgres -c "CREATE USER MAPPING FOR postgres SERVER jdbc_server OPTIONS( username 'root', password 'root');"
+	docker-compose exec postgresql psql -U postgres -c "CREATE SCHEMA jdbc_schema;"
+	# docker-compose exec postgresql psql -U postgres -c "IMPORT FOREIGN SCHEMA fdw_test FROM SERVER jdbc_server INTO jdbc_schema;"
+	docker-compose exec postgresql psql -U postgres -c "CREATE FOREIGN TABLE jdbc_schema.test (id int,name text) SERVER jdbc_server OPTIONS (table 'test');"
 
-init: init_mysql init_mssql init_odbc init_oracle
+init: init_mysql init_mssql init_odbc init_oracle init_jdbc
 
