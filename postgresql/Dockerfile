@@ -8,8 +8,8 @@ RUN apt update && apt -y install postgresql-12-mysql-fdw git
 RUN apt update && apt -y install libsybdb5 freetds-dev freetds-common gnupg gcc make wget postgresql-server-dev-12 unzip
 
 RUN git clone https://github.com/tds-fdw/tds_fdw.git
-COPY postgresql/import_view.patch tds_fdw
-RUN cd tds_fdw && patch -p1 < import_view.patch
+# COPY postgresql/import_view.patch tds_fdw
+# RUN cd tds_fdw && patch -p1 < import_view.patch
 RUN cd tds_fdw && make clean && make USE_PGXS=1 && make USE_PGXS=1 install
 
 # oracle_fdw

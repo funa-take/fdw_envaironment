@@ -7,6 +7,8 @@ up:
 stop:
 	docker-compose stop
 	
+psql:
+	docker-compose exec postgresql psql -U postgres
 	
 init_oracle:
 	docker-compose exec oracle11g /bin/bash -i -c "sqlplus system/oracle @/root/oracle/create_user.sql"
